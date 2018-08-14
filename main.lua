@@ -38,10 +38,13 @@ local script_file = nil
 local redis_obj   = nil
 local mysql_obj   = nil
 local mysql_env   = nil
+local log_file    = "log/mysql_to_redis.log" 
+local username_file = io.popen("whoami")
+g_username = username_file:read("*a"):sub(1,-2)
+username_file:close()
 
 --初始化配置
 local function init_conf()
-	local log_file = "log/mysql_to_redis.log" 
 	if not g_global.m_log:init(log_file) then
 		return false
 	end
@@ -68,6 +71,7 @@ local function init_conf()
 		return false
 	end 
 	mysql_json = g_global.m_common_mgr:read_file("json_conf/mysql.json")
+	mysql_json = string.gsub(mysql_json,"${user}",g_username)
 	if not mysql_json then
 		return false
 	end
@@ -139,12 +143,6 @@ end
 if not init() then
 	return	
 end
--- local t = g_global.m_xls.m_hash[string.lower("BeastStrengthenConfig")]
--- for k1,v1 in pairs(t) do
--- 	for k2,v2 in pairs(v1) do
--- 		print(k1,k2,v2)
--- 	end
--- end
 if run() then
 	g_global.m_log:debug("run success")
 else

@@ -1,6 +1,6 @@
 {
     "host":"127.0.0.1",
-    "db" : "roledb_root",
+    "db" : "roledb_${user}",
     "user":"root",
     "pwd" : "",
     "port" : 3306,

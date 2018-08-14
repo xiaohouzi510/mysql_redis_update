@@ -32,10 +32,6 @@ function mysql_to_redis_tw:convert_key_value(record_obj)
 	return result
 end
 
-local username_file = io.popen("whoami")
-local username = username_file:read("*a"):sub(1,-2)
-username_file:close()
-
 local eval_str = string.format([[
 	local rediskey = '%s_RoleData:'
 	for i=1,#KEYS do
@@ -46,7 +42,7 @@ local eval_str = string.format([[
 		redis.call("hset",rediskey..player_id,'CompareFight',value)
 		-- end
 	end
-]],username)
+]],g_username)
 
 --update 函数
 function mysql_to_redis_tw:update(record_obj,mysql_obj,redis_obj)
