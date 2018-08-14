@@ -85,7 +85,7 @@ function xls_mgr:read_xls()
 		local array       = sheet .. "Array"
 		local file,status = io.open(data_file,"rb")
 		if not file then
-			g_global.m_log:error(string.format("read file=%s error=%s",data_file,status))
+			g_global.m_log:error("read file=%s error=%s",data_file,status)
 			return false
 		end
 		local data = file:read("*a")

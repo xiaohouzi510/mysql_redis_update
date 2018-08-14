@@ -31,7 +31,7 @@ function mysql_obj:connect(json_array)
 	local db   = json_array.db
 	local obj,status = self.m_env:connect(db,user,pwd,host,port)
 	if not obj then
-		g_global.m_log:error(string.format("connect mysql error=%s host=%s user=%s port=%s pwd=%s db=%s",status,host,user,port,pwd,db))
+		g_global.m_log:error("connect mysql error=%s host=%s user=%s port=%s pwd=%s db=%s",status,host,user,port,pwd,db)
 		return false
 	end
 	return obj
@@ -44,7 +44,7 @@ function mysql_obj:execeute(sql)
 		if not record then
 			--执行失败，处理重连
 			if not self:deal_reconnect(status) then
-				g_global.m_log:error(string.format("execute error=%s sql=%s"),status,tostring(sql))
+				g_global.m_log:error("execute error=%s sql=%s"),status,tostring(sql)
 				return false	
 			end
 		else
@@ -62,7 +62,7 @@ function mysql_obj:deal_reconnect(str)
 		return false
 	end
 	if not self:init(self.m_json_array) then 
-		g_global.m_log:error(string.format("mysql reconnect error str=%s",str))
+		g_global.m_log:error("mysql reconnect error str=%s",str)
 		return false
 	end
 	return true

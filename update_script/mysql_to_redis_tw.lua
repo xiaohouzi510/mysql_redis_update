@@ -54,8 +54,7 @@ function mysql_to_redis_tw:update(record_obj,mysql_obj,redis_obj)
 		blob_attr_proto:Clear()
 		local status,cur_attr = pcall(zlib.inflate(),record["BlobAttr"]:sub(13,-1))
 		if not status then
-			local str = string.format("zip decode role=%s len=%d error=%s",record["RoleID"],#record["BlobAttr"],cur_attr) 
-			g_global.m_log:error(str)
+			g_global.m_log:error("zip decode role=%s len=%d error=%s",record["RoleID"],#record["BlobAttr"],cur_attr)
 			return false
 		end
 		blob_attr_proto:ParseFromString(cur_attr:sub(5,-1))
@@ -78,7 +77,7 @@ function mysql_to_redis_tw:update(record_obj,mysql_obj,redis_obj)
 	end	
 	local status,res = redis_obj:execute("eval",eval_str,#keys,unpack(result))
 	if not status then
-		g_global.m_log:error(string.format("eval error=%s",res))
+		g_global.m_log:error("eval error=%s",res)
 		return false
 	end
 	return true
@@ -123,7 +122,7 @@ function mysql_to_redis_tw:role_base_fight(record,blob_attr_proto,fight_proto)
 	local key    = g_global.m_xls:left_move(grade,8) + weapon 
 	local config = g_global.m_xls:get_row("RoleBaseAttr",key)
 	if not config then
-		g_global.m_log:error(string.format("RoleBaseAttr not found config grade=%d weapon=%d",grade,weapon))
+		g_global.m_log:error("RoleBaseAttr not found config grade=%d weapon=%d",grade,weapon)
 		return false
 	end
 	fight_proto.Level = config.Fighting
@@ -136,7 +135,7 @@ function mysql_to_redis_tw:cal_singel_equip_attr_fighting(dwLevelRange,dwEquipTy
 	local key = dwLevelRange * 100 + dwEquipTypeID
 	local config = g_global.m_xls:get_row("AttrFighting",key)
 	if not config then
-		g_global.m_log:error(string.format("AttrFighting not found config key=%d",key))
+		g_global.m_log:error("AttrFighting not found config key=%d",key)
 		return false
 	end
 	local isGetFighting = false
@@ -167,13 +166,13 @@ function mysql_to_redis_tw:role_equip_fight(record,blob_attr_proto,fight_proto)
 	for i,equip in ipairs(blob_attr_proto.BlobRoleItemData.EquipList) do
 		local equip_conf = g_global.m_xls:get_row("SystemEquip",equip.BaseInfo.ItemNo)
 		if not equip_conf then
-			g_global.m_log:error(string.format("SystemEquip not found config itemno=%d",equip.BaseInfo.ItemNo))
+			g_global.m_log:error("SystemEquip not found config itemno=%d",equip.BaseInfo.ItemNo)
 			return false
 		end
 		dwEquipBaseFighting = dwEquipBaseFighting + equip_conf.Fighting
 		local group_conf    = g_global.m_xls:get_row("AttrGroup",equip_conf.AttrGroupID)	
 		if not group_conf then
-			g_global.m_log:debug(string.format("AttrGroup not found config id=%d",equip_conf.AttrGroupID))
+			g_global.m_log:debug("AttrGroup not found config id=%d",equip_conf.AttrGroupID)
 		else
 			local dwAttrRangeID = 0
 			for _,equip_attr in ipairs(equip.EquipAttr.Attr) do
@@ -215,8 +214,7 @@ function mysql_to_redis_tw:role_equip_fight(record,blob_attr_proto,fight_proto)
 				local strengthen_key  = g_global.m_xls:left_move(strengthen.PositionID,16) + strengthen.StrengLevel
 				local strengthen_conf = g_global.m_xls:get_row("StrengthenConf",strengthen_key)
 				if not strengthen_conf then
-					local str = string.format("StrengthenConf not found config position=%d level=%d",strengthen.PositionID,strengthen.StrengLevel)
-					g_global.m_log:error(str)
+					g_global.m_log:error("StrengthenConf not found config position=%d level=%d",strengthen.PositionID,strengthen.StrengLevel)
 					return false
 				end
 				dwEquipStrengthenFighting = dwEquipStrengthenFighting + strengthen_conf.Fighting
@@ -226,7 +224,7 @@ function mysql_to_redis_tw:role_equip_fight(record,blob_attr_proto,fight_proto)
 		for _,stone in ipairs(equip.HoleInfo) do
 			local stone_conf = g_global.m_xls:get_row("LingShi",stone.FillItemID)
 			if not stone_conf then
-				g_global.m_log:error(string.format("LingShi not found config id=%d",stone.FillItemID))
+				g_global.m_log:error("LingShi not found config id=%d",stone.FillItemID)
 				return false
 			end
 			dwEquipLingShiFighting = dwEquipLingShiFighting + stone_conf.Fighting
@@ -263,7 +261,7 @@ function mysql_to_redis_tw:get_grade_skill_point(record,blob_attr_proto)
 		if config then
 			result = result + config.Point
 		else
-			g_global.m_log:error(string.format("ExpUpgrade not found conf id=%d",i))
+			g_global.m_log:error("ExpUpgrade not found conf id=%d",i)
 		end
 	end 
 	return result
@@ -296,7 +294,7 @@ function mysql_to_redis_tw:role_skill_fight(record,blob_attr_proto,fight_proto)
 	local surplus_point = self:get_surplus_skill_point(record,blob_attr_proto)
 	local fight_conf    = g_global.m_xls:get_row("SkillFighting",all_point - surplus_point)
 	if not fight_conf then
-		g_global.m_log:warn(string.format("SkillFighting not found conf all=%d surplus=%d",all_point,surplus_point))
+		g_global.m_log:warn("SkillFighting not found conf all=%d surplus=%d",all_point,surplus_point)
 		return true 
 	end
 	fight_proto.Skill = fight_conf.Fighting
@@ -341,7 +339,7 @@ function mysql_to_redis_tw:role_beast_fight(record,blob_attr_proto,fight_proto)
 					if best_property then
 						local strengthen_conf = g_global.m_xls:get_row("BeastStrengthenConfig",v1.Type,best_property.GiftLevel)
 						if not strengthen_conf then
-							g_global.m_log:error(string.format("BeastStrengthenConfig conf not found type=%d level=%d",v1.Type,v1.GiftLevel))
+							g_global.m_log:error("BeastStrengthenConfig conf not found type=%d level=%d",v1.Type,v1.GiftLevel)
 						else
 							fight_proto.BeastStrengthen = fight_proto.BeastStrengthen + strengthen_conf.Fighting
 						end
@@ -349,13 +347,13 @@ function mysql_to_redis_tw:role_beast_fight(record,blob_attr_proto,fight_proto)
 				end
 				local attr_conf = g_global.m_xls:get_row("shenshoubaseattr",v.ID)
 				if not attr_conf then
-					g_global.m_log:error(string.format("shenshoubaseattr conf not found id=%d weapon",v.ID))
+					g_global.m_log:error("shenshoubaseattr conf not found id=%d weapon",v.ID)
 				else
 					fight_proto.BeastLevel = fight_proto.BeastLevel + attr_conf.Fighting	
 				end
 				local level_conf = g_global.m_xls:get_row("ShenShouLevel",v.Level)
 				if not level_conf then
-					g_global.m_log:error(string.format("ShenShouLevel conf not found level=%d",v.Level))
+					g_global.m_log:error("ShenShouLevel conf not found level=%d",v.Level)
 				else
 					fight_proto.BeastLevel = fight_proto.BeastLevel + level_conf.Fighting
 				end
@@ -387,7 +385,7 @@ function mysql_to_redis_tw:get_fashion_fight(record,blob_attr_proto,fight_proto)
 	for _,v in ipairs(blob_attr_proto.OutWardData.EnableOutWard) do
 		local conf = g_global.m_xls:get_row("OutWardConf",v.EnableOutWardID)
 		if not conf then
-			g_global.m_log:error(string.format("OutWardConf conf not found id=%d ",v.EnableOutWardID))
+			g_global.m_log:error("OutWardConf conf not found id=%d ",v.EnableOutWardID)
 		else
 			fight_proto.OutWard = fight_proto.OutWard + conf.FightNum
 		end

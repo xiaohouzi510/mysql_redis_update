@@ -13,7 +13,7 @@ end
 function redis_obj:execute(fun_name,...)
 	local fun = self.m_connect[fun_name]
 	if not fun then
-		g_global.m_log:error(string.format("not found fun=%s",fun_name))
+		g_global.m_log:error("not found fun=%s",fun_name)
 		return false
 	end
 	while true do
@@ -43,14 +43,14 @@ function redis_obj:connect(json_array)
 	local port = json_array.port
 	local obj,status = redis.connect(host,port)
 	if not obj then
-		g_global.m_log:error(string.format("redis connect error=%s host=%s port=%s",status,host,port))
+		g_global.m_log:error("redis connect error=%s host=%s port=%s",status,host,port)
 		return false
 	end
 	self.m_connect = obj
 	if json_array.auth and json_array.auth ~= "" then
 		local res,status = self:execute("auth",json_array.auth)
 		if not res then
-			g_global.m_log:error(string.format("redis auth error=%s host=%s port=%s auth=%s",status,host,port,json_array.auth))
+			g_global.m_log:error("redis auth error=%s host=%s port=%s auth=%s",status,host,port,json_array.auth)
 			return false
 		end 
 	end
@@ -68,7 +68,7 @@ function redis_obj:deal_reconnect(str)
 		return false
 	end
 	if not self:connect(self.m_json_array) then 
-		g_global.m_log:error(string.format("redis reconnect error str=%s",str))
+		g_global.m_log:error("redis reconnect error str=%s",str)
 		return false
 	end
 	return true

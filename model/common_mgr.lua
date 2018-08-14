@@ -27,7 +27,7 @@ end
 function common_mgr:read_file(file_name)
 	local file,status = io.open(file_name,"r")
 	if not file then
-		g_global.m_log:error(string.format("read file=%s error=%s",file_name,status))
+		g_global.m_log:error("read file=%s error=%s",file_name,status)
 		return false
 	end
 	local str = file:read("*a")
@@ -39,7 +39,7 @@ end
 function common_mgr:popen_cmd(cmd_str)
 	local file,status = io.popen(cmd_str)
 	if not file then
-		g_global.m_log:error(string.format("popen cmd=%s error=%s",cms_str,status))
+		g_global.m_log:error("popen cmd=%s error=%s",cms_str,status)
 		return false
 	end
 	local result = {}

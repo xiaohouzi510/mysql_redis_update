@@ -53,7 +53,7 @@ local function init_conf()
 	end
 	local env,status = mysql_env_model:mysql() 
 	if not env then
-		g_global.m_log:error(string.format("create mysql env error=%s",status))
+		g_global.m_log:error("create mysql env error=%s",status)
 		return false
 	end
 	mysql_env  = env
@@ -63,7 +63,7 @@ local function init_conf()
 	end
 	local status,json_table = pcall(cjson.decode,redis_json)
 	if not status then
-		g_global.m_log:error(string.format("json=%s decode redis error=%s",redis_json,json_table))
+		g_global.m_log:error("json=%s decode redis error=%s",redis_json,json_table)
 		return 
 	end
 	redis_obj  = redis_model.new()
@@ -77,7 +77,7 @@ local function init_conf()
 	end
 	status,json_table = pcall(cjson.decode,mysql_json)
 	if not status then
-		g_global.m_log:error(string.format("json=%s decode mysql error=%s",mysql_json,json_table))
+		g_global.m_log:error("json=%s decode mysql error=%s",mysql_json,json_table)
 		return 
 	end
 	mysql_obj = mysql_model.new(mysql_env)

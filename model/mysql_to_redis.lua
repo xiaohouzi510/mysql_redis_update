@@ -44,8 +44,7 @@ function mysql_to_redis:run_one_table(mysql_obj,redis_obj,table_name)
 		local str = string.format("select %s from %s %s limit %d,%d",self.m_field_str,table_name,self.m_where,start_index,end_index)
 		local record_obj,status = mysql_obj:execeute(str)
 		if not record_obj then
-			local str = string.format("mysql run error=%s table=%s field=%s start_index=%d end_index=%d",status,table_name,self.field_str,start_index,end_index)
-			g_global.m_log:error(str)
+			g_global.m_log:error("mysql run error=%s table=%s field=%s start_index=%d end_index=%d",status,table_name,self.field_str,start_index,end_index)
 			return false
 		end
 		if not self:update(record_obj,mysql_obj,redis_obj) then

@@ -37,7 +37,7 @@ res = client:auth("123456")
 str = [[
 	for i=1,#KEYS do
 		local key   = KEYS[i]	
-		localf value = ARGV[i]
+		local value = ARGV[i]
 		redis.call('set',key,value)
 	end
 	return true

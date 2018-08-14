@@ -23,26 +23,28 @@ function log_file:get_prefix(mod)
 end
 
 --错误日志
-function log_file:error(str) 
-	self:log("ERROR",str)
+function log_file:error(format,...) 
+	self:log("ERROR",format,...)
 end
 
 --debug 日志
-function log_file:debug(str)
-	self:log("DEBUG",str)
+function log_file:debug(format,...)
+	self:log("DEBUG",format,...)
 end
 
 --警告日志
-function log_file:warn(str) 
-	self:log("WARN",str)
+function log_file:warn(format,...) 
+	self:log("WARN",format,...)
 end
 
-function log_file:log(mod,str)
+function log_file:log(mod,format,...)
 	local prefix = self:get_prefix(mod)
 	--先写前缀
 	local status = self.m_file:write(prefix)	
 	--成功后再写 log
 	if status then
+		local str = string.format(format,...)
+		print(prefix..str)
 		self.m_file:write(str)
 		self.m_file:write("\n")
 	end
