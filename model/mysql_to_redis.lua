@@ -23,7 +23,7 @@ end
 function mysql_to_redis:run_one_table(mysql_obj,redis_obj,table_name)
 	local res_obj,status = mysql_obj:execeute(string.format("select count(*) from %s",table_name)) 
 	if not res_obj then
-		g_global.m_log:error"select count error table_name=%s",table_name)
+		g_global.m_log:error("select count error table_name=%s",table_name)
 		return false
 	end
 	local result = res_obj:fetch()

@@ -43,7 +43,7 @@ function redis_obj:connect(json_array)
 	local port = json_array.port
 	local obj,status = redis.connect(host,port)
 	if not obj then
-		g_global.m_log:error("redis connect error=%s host=%s port=%s",status,host,port)
+		g_global.m_log:error("redis connect error=%s host=%s port=%s",status,host,tostring(port))
 		return false
 	end
 	self.m_connect = obj

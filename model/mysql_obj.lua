@@ -44,7 +44,7 @@ function mysql_obj:execeute(sql)
 		if not record then
 			--执行失败，处理重连
 			if not self:deal_reconnect(status) then
-				g_global.m_log:error("execute error=%s sql=%s"),status,tostring(sql)
+				g_global.m_log:error("execute error=%s sql=%s",status,tostring(sql))
 				return false	
 			end
 		else

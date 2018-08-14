@@ -44,7 +44,6 @@ function log_file:log(mod,format,...)
 	--成功后再写 log
 	if status then
 		local str = string.format(format,...)
-		print(prefix..str)
 		self.m_file:write(str)
 		self.m_file:write("\n")
 	end
