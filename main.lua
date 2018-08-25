@@ -6,7 +6,7 @@ local script_path = string.format("%s/?.lua",script_dir)
 local lua_path = {
 	"redis/?.lua",
 	"model/?.lua",	
-	"libpb/?.lua",
+	"protobufluaint64/protobuf_lua/?.lua",
 	"pblua/cs/?.lua",
 	"pblua/common/?.lua",
 	"pblua/database/?.lua",

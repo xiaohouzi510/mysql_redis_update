@@ -7,7 +7,9 @@ do
 done
 ./convert_data.sh
 ./convert_pb.sh
-./protobufluaint64/convert.sh
+cd protobufluaint64
+./convert.sh
+cd ..
 for v in ${file_list}
 do
 	iconv -f utf8 -t iso-8859-1 ${v} -o ${v}
