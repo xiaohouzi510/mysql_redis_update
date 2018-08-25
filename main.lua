@@ -19,6 +19,7 @@ local c_path = {
 	"lua-zlib-master/?.so",
 	"redis/?.so;",
 	"lib/?.so;",
+	"protobufluaint64/?.so;",
 }
 package.path  = table.concat(lua_path,";").. ";" .. package.path
 package.cpath = table.concat(c_path,";").. ";" .. package.cpath

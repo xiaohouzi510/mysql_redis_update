@@ -1,7 +1,7 @@
 all : pb.so
-
-pb.so : libpb/pb.cpp 
-	g++ -g -shared -fPIC -o lib/$@ $^ -ldl
+cur_path:=$(shell pwd)
+pb.so : 
+	cd $(cur_path)/protobufluaint64 && make
 
 clean :
-	rm -rf lib/pb.so
+	cd $(cur_path)/protobufluaint64 && make clean
