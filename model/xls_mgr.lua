@@ -23,6 +23,7 @@ function xls_mgr:init()
 		{"HonorConfig",self.honor_key},
 		{"OutWardConf","OutWardID"},
 		{"BeastExtraStrengthenAdd","ID","Weapon"},
+		{"RechargePoint","Id"},
 	}
 	self.m_list = {}
 	self.m_hash = {}
