@@ -5,3 +5,5 @@
 3.编译动态库执行：make
 
 4.转换文件执行：./convert.sh
+
+5.运行脚本：lua main.lua
