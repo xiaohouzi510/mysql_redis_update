@@ -149,5 +149,5 @@ if run() then
 	print("run success")
 else
 	g_global.m_log:error("run fail")
-	print("run success more than see ./log/mysql_to_redis.log")
+	print("run fail more than see ./log/mysql_to_redis.log")
 end
